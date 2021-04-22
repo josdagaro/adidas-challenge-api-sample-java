@@ -1,0 +1,33 @@
+name: "Deploy"
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - staging
+
+jobs:
+  deploy:
+    environment: st
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    needs:
+      - build
+      - sonar
+    steps:
+      - if: github.event.pull_request.merged
+        uses: actions/checkout@v2
+      - if: github.event.pull_request.merged
+        uses: docker://ghcr.io/kciter/aws-ecr-action:latest
+        with:
+          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          repo: api-sample-java
+          region: us-east-1
+          tags: latest,${{ github.sha }}
+          create_repo: false
+          set_repo_policy: false
