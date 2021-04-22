@@ -18,13 +18,12 @@ jobs:
       - if: github.event.pull_request.merged
         uses: actions/checkout@v2
       - if: github.event.pull_request.merged
-        uses: docker://ghcr.io/kciter/aws-ecr-action:latest
+        uses: appleboy/docker-ecr-action@master
         with:
-          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-          repo: api-sample-java
+          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           region: us-east-1
-          tags: latest,${{ github.sha }}
-          create_repo: false
-          set_repo_policy: false
+          repo: api-sample-java
+          registry: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
+          tags: "latest,${{ github.sha }}"
+          dockerfile: Dockerfile
