@@ -14,9 +14,6 @@ jobs:
     defaults:
       run:
         shell: bash
-    needs:
-      - build
-      - sonar
     steps:
       - if: github.event.pull_request.merged
         uses: actions/checkout@v2
