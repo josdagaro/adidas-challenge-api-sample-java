@@ -1,9 +1,7 @@
 name: "Deploy"
 
 on:
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
       - main
 
@@ -15,10 +13,8 @@ jobs:
       run:
         shell: bash
     steps:
-      - if: github.event.pull_request.merged
-        uses: actions/checkout@v2
-      - if: github.event.pull_request.merged
-        uses: appleboy/docker-ecr-action@master
+      - uses: actions/checkout@v2
+      - uses: appleboy/docker-ecr-action@master
         with:
           access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -27,3 +23,10 @@ jobs:
           registry: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
           tags: "latest,${{ github.sha }}"
           dockerfile: Dockerfile
+      - uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: api-sample-java
+          image_uri: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/api-sample-java:${{ github.sha }}

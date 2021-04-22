@@ -1,0 +1,16 @@
+{
+  "name": "adidas-challenge-api-sample-java",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josdagaro/adidas-challenge-api-sample-java.git"
+  },
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/josdagaro/adidas-challenge-api-sample-java/issues"
+  },
+  "homepage": "https://github.com/josdagaro/adidas-challenge-api-sample-java#readme"
+}

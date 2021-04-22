@@ -1,12 +1,7 @@
-# build stage
-FROM maven:3.5-jdk-8-alpine as build-env
-WORKDIR /java
-COPY . /java/
-RUN mvn clean package
+FROM public.ecr.aws/lambda/nodejs:12
 
-# final stage
-FROM openjdk:8-jre-alpine
-COPY --from=build-env /java/target/*.jar /app.jar
-CMD java -jar app.jar
+# Copy function code
+COPY app.js ${LAMBDA_TASK_ROOT}
 
-
+# Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
+CMD [ "app.handler" ]
